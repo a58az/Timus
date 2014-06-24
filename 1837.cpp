@@ -23,13 +23,12 @@ void bfs()
 
     // Isenbaev in map
     if (id.find(root) != id.end()) {
-        int cur_id = id[root];
+        int cur = id[root];
 
-        dist[cur_id] = 0;
-        q.push(cur_id);
+        dist[cur] = 0;
+        q.push(cur);
 
         while (!q.empty()) {
-            int cur;
             cur = q.front();
             q.pop();
 
