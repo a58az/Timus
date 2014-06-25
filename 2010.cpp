@@ -14,39 +14,37 @@ int main()
     freopen("input.txt", "rt", stdin);
     #endif
 
-    int xy[4];
     int n, x, y;
     int king, knight, bishop, rook, queen;
     king = knight = bishop = rook = queen = 0;
 
     cin >> n >> x >> y;
 
-    // left
-    xy[0] = x - 1;
-    // right
-    xy[1] = n - x;
-    // top
-    xy[2] = n - y;
-    // bottom
-    xy[3] = y - 1;
+    int xy[4] = {
+        x - 1, // left
+        n - x, // right
+        n - y, // top
+        y - 1  // bottom
+    };
+                   
+    int diag[4] = {
+        min(xy[0], xy[2]), // top left
+        min(xy[1], xy[2]), // top right
+        min(xy[1], xy[3]), // bottom right
+        min(xy[0], xy[3])  // bottom left
+    };
 
-    // top left
-    bishop += min(xy[0], xy[2]);
-    // top right
-    bishop += min(xy[1], xy[2]);
-    // bottom right
-    bishop += min(xy[1], xy[3]);
-    // bottom left
-    bishop += min(xy[0], xy[3]);
+    for(auto& i : xy) {
+        king += (i > 0 ? 1 : 0);
+        rook += i;
+    }
 
-    rook = xy[0] + xy[1] + xy[2] + xy[3];
+    for(auto& i : diag) {
+        king += (i > 0 ? 1 : 0);
+        bishop += i;
+    }
 
-    king = (xy[0] > 0 ? 1 : 0) + (xy[1] > 0 ? 1 : 0) +
-        (xy[2] > 0 ? 1 : 0) + (xy[3] > 0 ? 1 : 0) +
-        (min(xy[0], xy[2]) > 0 ? 1 : 0) +
-        (min(xy[1], xy[2]) > 0 ? 1 : 0) +
-        (min(xy[1], xy[3]) > 0 ? 1 : 0) +
-        (min(xy[0], xy[3]) > 0 ? 1 : 0);
+    queen = rook + bishop;
 
     // top
     if (y + 2 <= n) {
@@ -69,10 +67,6 @@ int main()
         knight += (y - 1 >= 1) ? 1 : 0; // bottom
     }
 
-
-    queen = rook + bishop;
-
-    // cout << endl << king << endl << knight << endl << bishop << endl << rook << endl << queen;
     cout << "King: " << king << endl;
     cout << "Knight: " << knight << endl;
     cout << "Bishop: " << bishop << endl;
